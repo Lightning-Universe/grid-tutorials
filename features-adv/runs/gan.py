@@ -11,10 +11,25 @@ import torchvision.transforms as transforms
 from pytorch_lightning import LightningDataModule, LightningModule, Trainer
 from torch.utils.data import DataLoader, random_split
 from torchvision.datasets import MNIST
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--gpus', type=int, default=0,
+                    help='number of gpus to use for training')
+parser.add_argument('--strategy', type=str, default='ddp',
+                    help='strategy to use for training')
+parser.add_argument('--batch-size', type=int, default=64,
+                    help='batch size to use for training')
+parser.add_argument('--max-epochs', type=int, default=5,
+                    help='maximum number of epochs for training')
+
+args = parser.parse_args()
+#AVAIL_GPUS = args.gpus
+#BATCH_SIZE = args.batch_size
 
 PATH_DATASETS = os.environ.get("PATH_DATASETS", ".")
-AVAIL_GPUS = min(1, torch.cuda.device_count())
-BATCH_SIZE = 256 if AVAIL_GPUS else 64
+#AVAIL_GPUS = min(1, torch.cuda.device_count())
+#BATCH_SIZE = 256 if AVAIL_GPUS else 64
 NUM_WORKERS = int(os.cpu_count() / 2)
 
 # %% [markdown]
@@ -159,7 +174,7 @@ class GAN(LightningModule):
         lr: float = 0.0002,
         b1: float = 0.5,
         b2: float = 0.999,
-        batch_size: int = BATCH_SIZE,
+        batch_size: int = args.batch_size,
         **kwargs
     ):
         super().__init__()
@@ -252,7 +267,7 @@ class GAN(LightningModule):
 # %%
 dm = MNISTDataModule()
 model = GAN(*dm.size())
-trainer = Trainer(gpus=AVAIL_GPUS, max_epochs=5, progress_bar_refresh_rate=20)
+trainer = Trainer(gpus=args.gpus, max_epochs=args.max_epochs, progress_bar_refresh_rate=20)
 trainer.fit(model, dm)
 
 # %%
