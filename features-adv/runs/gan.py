@@ -44,7 +44,7 @@ class MNISTDataModule(LightningDataModule):
     def __init__(
         self,
         data_dir: str = PATH_DATASETS,
-        batch_size: int = BATCH_SIZE,
+        batch_size: int = args.batch_size,
         num_workers: int = NUM_WORKERS,
     ):
         super().__init__()
