@@ -1,0 +1,7 @@
+matplotlib>=3.0
+lightning-flash[image]==0.7.2
+PyYAML==5.4
+pytorch-lightning==1.6.0
+timm==0.4.12
+torchvision==0.11.2
+torch==1.8.1
