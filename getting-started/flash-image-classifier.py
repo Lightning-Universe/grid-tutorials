@@ -18,11 +18,11 @@ parser.add_argument('--gpus', type=int, default=0,
                             help='number of gpus to use for training')
 parser.add_argument('--strategy', type=str, default='ddp',
                             help='strategy to use for training')
-parser.add_argument('--batch-size', type=int, default=64,
+parser.add_argument('--batch_size', type=int, default=64,
                             help='batch size to use for training')
 parser.add_argument('--epochs', type=int, default=5,
                             help='maximum number of epochs for training')
-parser.add_argument('--data-dir', type=str, default='/datastores/cifar5',
+parser.add_argument('--data_dir', type=str, default='/datastores/cifar5',
                             help='the directory to load data from')
 parser.add_argument('--learning_rate', type=float, default=1e-4, 
                             help='the learning rate to use during model training')
