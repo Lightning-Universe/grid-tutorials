@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import torchvision
 from flash.image import ImageClassificationData, ImageClassifier
 import argparse
+import pytorch_lightning as pl
 from pytorch_lightning import seed_everything
 from flash import Trainer
 from pytorch_lightning.callbacks import LearningRateMonitor
@@ -48,10 +49,10 @@ datamodule = ImageClassificationData.from_folders(
 model = ImageClassifier(backbone="resnet18", num_classes=datamodule.num_classes, learning_rate=args.learning_rate, optimizer=args.optimizer)
 
 trainer = Trainer(
-    progress_bar_refresh_rate=10,
     max_epochs=args.epochs,
     gpus=args.gpus,
     #logger=TensorBoardLogger("lightning_logs/", name="resnet"),
+    callbacks=[pl.callbacks.progress.TQDMProgressBar(refresh_rate=10)]
     #callbacks=[LearningRateMonitor(logging_interval="step")],
 )
 
@@ -59,4 +60,3 @@ if __name__ == '__main__':
     trainer.fit(model, datamodule=datamodule)
     #print('finished fitting')
     trainer.test(model, datamodule=datamodule)
-
