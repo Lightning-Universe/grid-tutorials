@@ -1,0 +1,10 @@
+compute:
+  train:
+    actions:
+       on_build_start:
+         - apt-get update
+         - apt-get install curl -y
+       on_experiment_start:
+         - curl https://pl-flash-data.s3.amazonaws.com/cifar5.zip -o cifar5.zip
+         - unzip cifar5.zip
+         - mv cifar5 /tmp/scratch
